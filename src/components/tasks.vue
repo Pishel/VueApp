@@ -6,8 +6,8 @@
     <div class="holder">
       <ul class="done_tasks">
         <transition-group name="list" enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-          <li v-for="(data, index) in done_skills" :key='data.skill'>          
-            {{ data.skill }}
+          <li v-for="(data, index) in done_tasks" :key='data.task'>          
+            {{ data.task }}
             <i class="fa fa-window-close" v-on:click="remove_done(index)"></i>
             <input type="checkbox" class="check" checked v-on:click="moveto_down(index)">
             
@@ -16,8 +16,8 @@
       </ul>
       <ul>
         <transition-group name="list" enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
-          <li v-for="(data, index) in skills" :key='data.skill'>          
-            {{ data.skill }}            
+          <li v-for="(data, index) in tasks" :key='data.task'>          
+            {{ data.task }}            
             <i class="fa fa-window-close" v-on:click="remove(index)"></i>
             <input type="checkbox" class="check" v-on:click="moveto_up(index)">
           </li>
@@ -26,12 +26,12 @@
       <form>
           <div style="overflow:hidden">
             <span class="task">Task</span>
-            <input type="text" placeholder="What do you need to do" v-model="skill" name="skill" class="task_input"><br/>
+            <input type="text" placeholder="What do you need to do" v-model="task" name="task" class="task_input" v-validate="'required|min:5'"><br/>
           </div>          
-            <button class="add_button" v-on:click="addskill">Save Item</button>
-          
+            <button class="add_button" v-on:click="addtask">Save Item</button>
+          <!-- <input type="submit" class="add_button" value="Save Item"/> -->
           <transition name="alert-in" enter-active-class="animated flipInX" leave-active-class="animated flipOutX">
-          <!--p class="alert" v-if="errors.has('skill')">{{errors.first('skill')}}</p-->  
+          <p class="alert" v-if="errors.has('task')">{{errors.first('task')}}</p>  
           </transition>          
     </form>      
     </div>
@@ -40,44 +40,44 @@
 
 <script>
 export default {
-  name: 'skills',  
+  name: 'tasks',  
   data(){
     return {            
-      skills:[
-        {"skill":"Go to Work"}        
+      tasks:[
+        {"task":"Go to Work"}        
       ],
-      done_skills:[
-        {"skill":"Wake Up"},
-        {"skill":"Eat Breakfast"}
+      done_tasks:[
+        {"task":"Wake Up"},
+        {"task":"Eat Breakfast"}
       ],
-      skill:'',
+      task:'',
       showAlert:false
     }
   },
   methods:{
-    addskill(){        
+    addtask(){        
       this.$validator.validateAll().then((result) => {
         if (result){               
-          this.skills.push({skill:this.skill});
-          this.skill = '';      
+          this.tasks.push({task:this.task});
+          this.task = '';      
         } else{
           console.log("Not valid");
         }
       })            
     },
     moveto_down(id){        
-        this.skills.push({skill:this.done_skills[id].skill});
-        this.done_skills.splice(id,1);
+        this.tasks.push({task:this.done_tasks[id].task});
+        this.done_tasks.splice(id,1);
     },
     moveto_up(id){
-        this.done_skills.push({skill:this.skills[id].skill});
-        this.skills.splice(id,1);
+        this.done_tasks.push({task:this.tasks[id].task});
+        this.tasks.splice(id,1);
     },
     remove(id){        
-      this.skills.splice(id,1);
+      this.tasks.splice(id,1);
     },
     remove_done(id){
-      this.done_skills.splice(id,1);
+      this.done_tasks.splice(id,1);
     }
 
   }  
