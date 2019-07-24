@@ -8,7 +8,7 @@
         <transition-group name="list" enter-active-class="animated bounceInUp" leave-active-class="animated bounceOutDown">
           <li v-for="(data, index) in done_skills" :key='data.skill'>          
             {{ data.skill }}
-            <i class="fa fa-window-close" v-on:click="remove(index)"></i>
+            <i class="fa fa-window-close" v-on:click="remove_done(index)"></i>
             <input type="checkbox" class="check" checked v-on:click="moveto_down(index)">
             
           </li>
@@ -75,7 +75,11 @@ export default {
     },
     remove(id){        
       this.skills.splice(id,1);
+    },
+    remove_done(id){
+      this.done_skills.splice(id,1);
     }
+
   }  
 }
 </script>
